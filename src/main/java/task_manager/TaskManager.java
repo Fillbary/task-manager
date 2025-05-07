@@ -15,7 +15,7 @@ public class TaskManager {
         this.tasks = new ArrayList<>();
     }
 
-    public List<Task> getTasks() {
+    public static List<Task> getTasks() {
         return tasks;
     }
 
@@ -41,12 +41,12 @@ public class TaskManager {
     public static List<Task> getAllTasks() {
         for (Task task : tasks) {
             if (tasks.isEmpty()) {
-                System.out.println("Список задач пуст.");
+                ConsoleHelper.writeMessage("List is empty");
             } else {
                 String template = "Task id: %d title: %s \n description: %s \n status: %s \n";
-                System.out.format(template, task.getID(), task.getTitle(), task.getDescription(), task.isCompleted());
+                ConsoleHelper.writeMessage(String.format(template, task.getID(), task.getTitle(), task.getDescription(), task.isCompleted()));
             }
-            System.out.println("____________________\n");
+            ConsoleHelper.writeMessage("____________________\n");
         }
         return tasks;
     }

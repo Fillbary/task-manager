@@ -1,5 +1,6 @@
 package task_manager;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -8,38 +9,53 @@ import java.util.Scanner;
 * Provides the user with a menu for interacting with the TaskManager.
 */
 public class Main {
-    private static final Scanner scanner = new Scanner(System.in);
-    private static final TaskManager taskManager = new TaskManager();
+    public static void main(String[] args) throws Exception {
+        Operation operation;
 
-    public static void main(String[] args) {
-        boolean running = true;
-
-        while (running) {
-            displayMenu();
-
-            try {
-                int choice = scanner.nextInt();
-                scanner.nextLine();
-                running = handlerUserChoice(choice);
-            } catch (InputMismatchException e) {
-                System.out.println("Error: Please enter a number between 1 and 5");
-                scanner.nextLine();
-            } catch (Exception e) {
-                System.out.println("Error" + e.getMessage());;
-            }
-        }
+        do {
+            operation = askOperation();
+            CommandExecutor.execute(operation);
+        } while (operation != Operation.EXIT);
+//        boolean running = true;
+//
+//        while (running) {
+//            displayMenu();
+//
+//            try {
+//                int choice = scanner.nextInt();
+//                scanner.nextLine();
+//                running = handlerUserChoice(choice);
+//            } catch (InputMismatchException e) {
+//                System.out.println("Error: Please enter a number between 1 and 5");
+//                scanner.nextLine();
+//            } catch (Exception e) {
+//                System.out.println("Error" + e.getMessage());;
+//            }
+//        }
     }
 
-    public static void displayMenu() {
-        System.out.println("Choose an action \n" +
-                        "1. Add task\n" +
-                        "2. Delete task\n" +
-                        "3. Get all task\n" +
-                        "4. Mark task as completed\n" +
-                        "5. Exit\n" +
-                        "___________________");
+    public static Operation askOperation() throws IOException {
+        ConsoleHelper.writeMessage("Choose an action");
+        ConsoleHelper.writeMessage(String.format("\t %d - Add task", Operation.ADD_TASK.ordinal()));
+        ConsoleHelper.writeMessage(String.format("\t %d - Delete task", Operation.DELETE_TASK.ordinal()));
+        ConsoleHelper.writeMessage(String.format("\t %d - Get all task", Operation.GET_ALL_TASKS.ordinal()));
+        ConsoleHelper.writeMessage(String.format("\t %d - Mark task as completed", Operation.MARK_TASK_AS_COMPLETE.ordinal()));
+        ConsoleHelper.writeMessage(String.format("\t %d - Exit", Operation.EXIT.ordinal()));
+
+        return Operation.values()[ConsoleHelper.readInt()];
     }
 
+//    public static void displayMenu() {
+//        System.out.println("Choose an action \n" +
+//                        "1. Add task\n" +
+//                        "2. Delete task\n" +
+//                        "3. Get all task\n" +
+//                        "4. Mark task as completed\n" +
+//                        "5. Exit\n" +
+//                        "___________________");
+//    }
+
+    /*
     public static boolean handlerUserChoice(int choice) throws InterruptedException {
         switch (choice) {
                     case(1):
@@ -68,6 +84,11 @@ public class Main {
         return true;
     }
 
+     */
+
+
+    // Вынеси это в классы команд
+    /*
     public static void addTask() {
         System.out.println("You have chosen to add a task");
         System.out.println("Enter a task title:");
@@ -102,4 +123,6 @@ public class Main {
         taskManager.markTaskAsCompleted(completeTaskID);
         System.out.format("You have marked the task with ID: %d and title: %s as completed \n", completeTaskID, title);
     }
+
+     */
 }
